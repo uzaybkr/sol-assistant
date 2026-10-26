@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SocConsole from '../components/SocConsole.astro';
+import CTA from '../components/CTA.astro';
+
+const watch = [
+  ['Identity', 'Sign-ins, failed attempts, new devices and changes to account permissions.'],
+  ['Files', 'Unusual access, mass downloads and encryption patterns on the company drive.'],
+  ['Website', 'Uptime, certificate health and suspicious traffic against your site.'],
+  ['Endpoints', 'Alerts from staff laptops and workstations, including ransomware behavior.'],
+  ['Email', 'Phishing reported by staff and suspicious senders across the tenant.'],
+  ['Backups', 'Every scheduled backup checked, so a restore is known to work before you need it.'],
+];
+---
+<Base title="24/7 Monitoring" description="Round-the-clock monitoring by US-based SOC analysts: detect, triage, contain and report.">
+  <PageHero eyebrow="24/7 Monitoring" title="Real analysts." accent="Real time." crumbs={[['Monitoring']]}
+    lede="Our security operations center is staffed by analysts based in the United States. They watch your systems day and night and act when something needs a human decision." />
+
+  <section class="sec grain" style="background:linear-gradient(180deg,var(--void),var(--ash))">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">How an incident is handled</span>
+        <h2>From first signal to <span class="sun-text">written report.</span></h2>
+      </div>
+      <SocConsole heading={false} />
+    </div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head split reveal">
+        <div style="display:grid;gap:20px">
+          <span class="eyebrow">Coverage</span>
+          <h2>What we <span class="sun-text">watch.</span></h2>
+        </div>
+        <p class="lede">Signals from across your business land in one SIEM, so an analyst sees the whole picture instead of isolated alerts.</p>
+      </div>
+      <div class="principles">
+        {watch.map(([t, d]) => <div class="reveal"><h3>{t}</h3><p>{d}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Have analysts watching tonight." />
+</Base>

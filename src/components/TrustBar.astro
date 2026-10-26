@@ -1,0 +1,13 @@
+---
+// Renders nothing until TRUST in src/data/site.js has logos.
+import { TRUST } from '../data/site.js';
+const { label = 'Trusted by and working with' } = Astro.props;
+---
+{TRUST.length > 0 && (
+  <section class="trust" aria-label={label}>
+    <div class="wrap">
+      <span class="eyebrow">{label}</span>
+      <ul>{TRUST.map(t => <li><img src={t.src} alt={t.name} loading="lazy" height="36"></li>)}</ul>
+    </div>
+  </section>
+)}

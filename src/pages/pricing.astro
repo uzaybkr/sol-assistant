@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import { PRICING, bookHref, monthlyFor } from '../data/site.js';
+const fmt = n => '$' + n.toLocaleString('en-US');
+const usersDefault = 20;
+---
+<Base title="Pricing" description="Starting prices for Web Fortress, Fortress Complete, the Security Snapshot and penetration testing. Predictable monthly pricing per user.">
+  <PageHero eyebrow="Pricing" title="Predictable pricing." accent="No surprises." crumbs={[['Pricing']]}
+    lede="One monthly price per person, with a minimum for small teams. No hardware to buy and no surprise invoices: you know what protection costs before you sign." />
+
+  <section class="sec light alt" data-pricing>
+    <div class="wrap">
+      {!PRICING.confirmed && <p class="sample" style="margin-bottom:22px">Draft pricing, pending confirmation</p>}
+
+      <div class="est panel reveal">
+        <div class="field-label"><label for="estUsers">Your team size</label><output id="estOut" for="estUsers">{usersDefault} people</output></div>
+        <input type="range" id="estUsers" min="1" max="150" value={usersDefault}>
+      </div>
+
+      <div class="tiers">
+        {PRICING.plans.map(p => (
+          <article class={`tier reveal ${p.featured ? 'featured' : ''}`} data-per={p.perUser} data-min={p.min}>
+            {p.featured && <span class="tier-flag">Most chosen</span>}
+            <h3>{p.name}</h3>
+            <p class="muted">{p.blurb}</p>
+            <div class="tier-price">
+              <b data-price>{fmt(monthlyFor(p, usersDefault))}</b><span>/ month</span>
+            </div>
+            <p class="tier-rate">{fmt(p.perUser)} per user per month · {fmt(p.min)} minimum</p>
+            <ul class="checks">{p.features.map(f => <li><Icon name="check" />{f}</li>)}</ul>
+            <a class={`btn ${p.featured ? 'btn-solar' : 'btn-ghost'}`} href={`/plan?preset=${p.id === 'complete' ? 'all' : 'fortress'}`}>Build this plan <Icon name="arrow" /></a>
+          </article>
+        ))}
+      </div>
+      <p class="form-note" style="margin-top:16px">{PRICING.onboarding} Prices exclude applicable taxes.</p>
+
+      <div class="oneoff">
+        <h3>One-time services</h3>
+        <div class="oneoff-grid">
+          {PRICING.oneTime.map(o => (
+            <div class="panel reveal"><div class="oneoff-top"><b>{o.name}</b><span>{o.price}</span></div><p class="muted">{o.note}</p></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,6vw,90px)">
+      <div class="reveal" style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Pricing questions</span>
+        <h2>Straight <span class="sun-text">answers.</span></h2>
+        <a class="link" href={bookHref}>Book a 15-minute call <Icon name="arrow" /></a>
+      </div>
+      <div class="faq reveal">
+        {PRICING.faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Get an exact quote for your team." />
+</Base>
+<script>
+  const root = document.querySelector('[data-pricing]');
+  const range = document.getElementById('estUsers'), out = document.getElementById('estOut');
+  const fmt = n => '$' + n.toLocaleString('en-US');
+  const update = () => {
+    const users = +range.value;
+    out.textContent = users === 150 ? '150+ people' : `${users} ${users === 1 ? 'person' : 'people'}`;
+    range.style.setProperty('--p', (users - 1) / 149 * 100 + '%');
+    root.querySelectorAll('.tier').forEach(t => {
+      t.querySelector('[data-price]').textContent = fmt(Math.max(+t.dataset.min, +t.dataset.per * users));
+    });
+  };
+  range?.addEventListener('input', update);
+  if (range) update();
+</script>

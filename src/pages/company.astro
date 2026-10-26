@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Process from '../components/Process.astro';
+import CTA from '../components/CTA.astro';
+import { HISTORY } from '../data/site.js';
+
+const principles = [
+  ['You decide what matters', 'You decide what matters to your business. We build protection around it, not around a template.'],
+  ['Plain language', 'Every report, alert and recommendation is written so an owner can act on it without a translator.'],
+  ['People on watch', 'Automation catches signals. US-based analysts make the calls that need human judgment.'],
+];
+---
+<Base title="Company" description="About Acme Cyber: our mission, our principles and our history protecting small and mid-sized businesses.">
+  <PageHero eyebrow="Company" title="Enterprise-grade security," accent="sized for you." crumbs={[['Company']]}
+    lede="Acme Cyber exists so small and mid-sized businesses get the protection large enterprises take for granted: a secure workplace, verified backups and analysts watching around the clock." />
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">What we believe</span>
+        <h2>Our <span class="sun-text">principles.</span></h2>
+      </div>
+      <div class="principles">
+        {principles.map(([t, d]) => <div class="reveal"><h3>{t}</h3><p>{d}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec light alt">
+    <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(40px,6vw,90px)">
+      <div class="reveal" style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Our history</span>
+        <h2>How we <span class="sun-text">got here.</span></h2>
+        <p class="lede">From a single idea to a full security operations center.</p>
+        {HISTORY.some(h => h.sample) && <span class="sample">Example timeline, final dates to be confirmed</span>}
+      </div>
+      <ol class="timeline">
+        {HISTORY.map(h => (
+          <li class="reveal"><span class="yr">{h.year}</span><div class="body"><h3>{h.title}</h3><p>{h.text}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Working with us</span>
+        <h2>Protected in <span class="sun-text">four moves.</span></h2>
+      </div>
+      <Process />
+    </div>
+  </section>
+
+  <CTA />
+</Base>

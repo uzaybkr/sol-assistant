@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Products from '../components/Products.astro';
+import SocConsole from '../components/SocConsole.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import Process from '../components/Process.astro';
+import CTA from '../components/CTA.astro';
+import TrustBar from '../components/TrustBar.astro';
+import { TESTIMONIALS } from '../data/site.js';
+const quote = TESTIMONIALS[0];
+---
+<Base>
+  <section class="hero grain">
+    <canvas id="sun" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="status"><span class="pulse"></span>US-based SOC online · watching 24/7/365</div>
+        <h1>
+          <span class="l"><span>Your business,</span></span>
+          <span class="l"><span class="sun-text">protected.</span></span>
+          <span class="l"><span>Watched 24/7.</span></span>
+        </h1>
+        <p class="lede">Acme Cyber gives your business a secure employee portal, encrypted storage, a trusted website and analysts who watch it around the clock. You stay focused on the work. We keep the threats out.</p>
+        <div class="hero-cta">
+          <a class="btn btn-solar" href="/plan">Build your protection plan <Icon name="arrow" /></a>
+          <a class="btn btn-ghost" href="/solutions">See what's included</a>
+        </div>
+        <p class="hint" id="sunHint">Move your cursor over the sun. Click to fire a shield pulse.</p>
+      </div>
+      <div class="hero-meta">
+        <div><b>24/7</b><span>Monitoring, every day of the year</span></div>
+        <div><b>US</b><span>Every SOC analyst is based in the United States</span></div>
+        <div><b>SSL</b><span>Websites certified with Google Trust</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="creds">
+    <ul class="wrap">
+      <li>Employee portal</li><li>Encrypted drive</li><li>Google Trust SSL</li><li>US-based SOC</li><li>Verifiable backups</li>
+    </ul>
+  </div>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head split reveal">
+        <div style="display:grid;gap:20px">
+          <span class="eyebrow">Solutions</span>
+          <h2>Two systems.<br><span class="sun-text">One perimeter.</span></h2>
+        </div>
+        <p class="lede">Web Fortress gives your team the tools to work. Security Operations proves those tools stay safe. Run either one, or put both behind the same shield.</p>
+      </div>
+      <Products />
+    </div>
+  </section>
+
+  <section class="teaser">
+    <div class="wrap teaser-in reveal">
+      <div>
+        <span class="eyebrow">Free · 3 minutes</span>
+        <h2>Will you pass your <span class="sun-text">cyber-insurance renewal?</span></h2>
+        <p class="lede">Insurers now ask detailed security questions before they quote. Answer 15 of the most common ones and see exactly where you stand.</p>
+      </div>
+      <a class="btn btn-solar" href="/readiness">Take the readiness check <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <TrustBar />
+
+  <section class="sec grain" style="background:linear-gradient(180deg,var(--void),var(--ash))">
+    <div class="wrap"><SocConsole /></div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head split reveal">
+        <div style="display:grid;gap:20px">
+          <span class="eyebrow">Services</span>
+          <h2>Everything a security team does. <span class="sun-text">Without hiring one.</span></h2>
+        </div>
+        <p class="lede">We watch your systems, lock them down, try to break in the way an attacker would, and train your people to spot what gets past the filters.</p>
+      </div>
+      <ServicesGrid />
+    </div>
+  </section>
+
+  <section class="sec light alt">
+    <div class="wrap" style="display:grid;gap:clamp(40px,6vw,72px)">
+      <figure class="quote reveal" style="max-width:900px;margin-inline:auto;text-align:center;background:transparent;border:0;padding:0">
+        {quote.sample && <span class="sample" style="margin-inline:auto">Example testimonial</span>}
+        <blockquote style="font-size:clamp(26px,3vw,40px)">{quote.quote}</blockquote>
+        <figcaption style="border:0;justify-items:center"><b>{quote.name}</b><span>{quote.role}, {quote.org}</span></figcaption>
+      </figure>
+      <div style="text-align:center"><a class="link" href="/results">Read client results <Icon name="arrow" /></a></div>
+    </div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Getting started</span>
+        <h2>Protected in <span class="sun-text">four moves.</span></h2>
+      </div>
+      <Process />
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+<script>
+  import { initSun } from '../scripts/sun.js';
+  initSun(document.getElementById('sun'), null, document.getElementById('sunHint'));
+</script>

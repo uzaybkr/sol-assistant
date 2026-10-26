@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import ChatWidget from '../components/ChatWidget.astro';
+import { EMAIL, TOPICS, TOPIC_FROM_PARAM, BOOKING_URL, bookHref } from '../data/site.js';
+---
+<Base title="Contact" description="Contact Acme Cyber. Send a message, email support@example.com, or ask Sol, our AI assistant.">
+  <PageHero eyebrow="Contact" title="Talk to a" accent="real person." crumbs={[['Contact']]}
+    lede="Send us a message and we'll reply within one business day. Have a quick question? Our AI assistant Sol answers instantly, further down this page." />
+
+  <section class="sec light">
+    <div class="wrap contact-grid">
+      <form class="panel form" id="contactForm" novalidate data-topics={JSON.stringify(TOPIC_FROM_PARAM)}>
+        <span id="form" style="position:relative;top:-140px"></span>
+        <div class="two">
+          <label>Name<input name="name" id="cName" autocomplete="name" required maxlength="100"></label>
+          <label>Work email<input name="email" id="cEmail" type="email" autocomplete="email" required maxlength="200"></label>
+        </div>
+        <div class="two">
+          <label>Company<input name="company" id="cCompany" autocomplete="organization" maxlength="150"></label>
+          <label>Phone (optional)<input name="phone" id="cPhone" type="tel" autocomplete="tel" maxlength="40"></label>
+        </div>
+        <label>Topic
+          <select name="topic" id="cTopic">{TOPICS.map(t => <option>{t}</option>)}</select>
+        </label>
+        <label>Message<textarea name="message" id="cMessage" required maxlength="5000" placeholder="Tell us about your team and what you need protected."></textarea></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" id="cWebsite" tabindex="-1" autocomplete="off"></label>
+        <div class="form-status" id="cStatus" role="status" hidden></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+          <button class="btn btn-solar" type="submit" id="cSend">Send message <Icon name="arrow" /></button>
+          <p class="form-note">We only use your details to reply to you.</p>
+        </div>
+      </form>
+
+      <div class="side">
+        {BOOKING_URL && (
+          <div class="panel">
+            <h3>Prefer to talk?</h3>
+            <p>Pick a time for a 15-minute call. No sales script, just your questions.</p>
+            <a class="btn btn-solar" href={bookHref} style="width:max-content">Book a call <Icon name="arrow" /></a>
+          </div>
+        )}
+        <div class="panel alert">
+          <h3>Under attack right now?</h3>
+          <p>Email us with URGENT in the subject and include a phone number. Disconnect the affected device from the network, but don't power it off, and don't pay any ransom.</p>
+        </div>
+        <div class="panel">
+          <h3>Email</h3>
+          <div class="email-line"><a href={`mailto:${EMAIL}`}>{EMAIL}</a></div>
+          <button class="btn btn-ghost" type="button" data-copy={EMAIL} data-copy-ok="Email copied" style="--h:42px;width:max-content">Copy email</button>
+        </div>
+        <div class="panel">
+          <h3>Not ready to talk?</h3>
+          <p>Build a protection plan in two minutes and send it over. We'll reply with a proposal.</p>
+          <a class="link" href="/plan">Build your plan <Icon name="arrow" /></a>
+          <a class="link" href="/readiness">Take the readiness check <Icon name="arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec light alt" id="ask">
+    <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,5vw,72px);align-items:center">
+      <div class="reveal" style="display:grid;gap:20px">
+        <span class="eyebrow">Ask our AI</span>
+        <h2>Any question? <span class="sun-text">Ask Sol.</span></h2>
+        <p class="lede">Sol is our AI assistant. It knows our services and can answer general security questions any time of day. When you need a person, it will point you to our team.</p>
+        <ul class="checks" style="max-width:48ch">
+          <li><Icon name="check" />Explains Web Fortress, Security Operations and our services</li>
+          <li><Icon name="check" />Gives practical advice to protect your business</li>
+          <li><Icon name="check" />Tells you what to do first if you think you've been hacked</li>
+        </ul>
+      </div>
+      <div class="reveal"><ChatWidget inline /></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initChat } from '../scripts/chat.js';
+  const inline = document.querySelector('[data-chat]');
+  if (inline) initChat(inline);
+
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('cStatus');
+  const send = document.getElementById('cSend');
+  const el = id => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  const topicMap = JSON.parse(el('contactForm').dataset.topics);
+  if (topicMap[params.get('topic')]) el('cTopic').value = topicMap[params.get('topic')];
+  if (params.get('brief')) el('cMessage').value = params.get('brief').slice(0, 5000) + '\n\n';
+
+  const show = (msg, ok) => { status.hidden = false; status.className = 'form-status ' + (ok ? 'ok' : 'err'); status.textContent = msg; };
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    if (!data.name.trim()) return show('Please enter your name.', false), el('cName').focus();
+    if (!el('cEmail').checkValidity() || !data.email.trim()) return show('Please enter a valid email address.', false), el('cEmail').focus();
+    if (data.message.trim().length < 10) return show('Please add a few more details to your message.', false), el('cMessage').focus();
+    send.disabled = true;
+    try {
+      const res = await fetch('/api/contact', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+      const out = await res.json().catch(() => ({}));
+      if (res.ok) { form.reset(); show('Message sent. We will reply within one business day.', true); }
+      else show(out.error || 'Something went wrong. Please email support@example.com.', false);
+    } catch {
+      show('We could not reach the server. Please email support@example.com.', false);
+    }
+    send.disabled = false;
+  });
+</script>

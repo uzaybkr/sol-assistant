@@ -1,0 +1,18 @@
+---
+// Navy hero for inner pages. `crumbs` = [[label, href], ...] ending with the current page.
+const { eyebrow, title, accent, lede, crumbs = [] } = Astro.props;
+---
+<section class="page-hero grain">
+  <div class="wrap">
+    {crumbs.length > 0 && (
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        {crumbs.map(([label, href]) => <><span aria-hidden="true">/</span>{href ? <a href={href}>{label}</a> : <span aria-current="page">{label}</span>}</>)}
+      </nav>
+    )}
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h1>{title}{accent && <> <span class="sun-text">{accent}</span></>}</h1>
+    {lede && <p class="lede">{lede}</p>}
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import CTA from '../components/CTA.astro';
+import { SERVICES } from '../data/site.js';
+
+const extras = {
+  monitoring: ['Sign-ins and account changes', 'File activity on the encrypted drive', 'Website availability and certificate health', 'Endpoint alerts from staff devices'],
+  security: ['Multi-factor authentication for every account', 'Encryption for company files', 'Scheduled, verified backups', 'Isolation and clean restore after ransomware'],
+  pentest: ['Written scope and permission before testing', 'External network and web application testing', 'Findings ranked by real-world risk', 'A retest to confirm fixes worked'],
+  training: ['Recognizing phishing and fake invoices', 'Password managers and multi-factor habits', 'Safe file sharing', 'How and when to report something suspicious'],
+};
+---
+<Base title="Services" description="Monitoring, security hardening, penetration testing and awareness training from Acme Cyber.">
+  <PageHero eyebrow="Services" title="Everything a security team does." accent="Without hiring one." crumbs={[['Services']]}
+    lede="Four disciplines, one accountable partner. Use them together through our solutions, or bring us in for a single service." />
+
+  <section class="sec light">
+    <div class="wrap"><ServicesGrid /></div>
+  </section>
+
+  <section class="sec light alt" style="padding-top:0;background:var(--void)">
+    <div class="wrap">
+      {SERVICES.map(s => (
+        <article class="svc-detail" id={s.id}>
+          <div class="head">
+            <div class="ico"><Icon name={s.icon} /></div>
+            <h2>{s.name}</h2>
+            <span class="more" style="font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dust-2)">{s.tags}</span>
+          </div>
+          <div class="body">
+            <p>{s.long}</p>
+            <ul class="checks">{extras[s.id].map(x => <li><Icon name="check" />{x}</li>)}</ul>
+            <a class="link" href={s.id === 'pentest' ? '/plan?needs=pentest' : '/contact'}>{s.id === 'pentest' ? 'Add to my plan' : `Ask about ${s.name.toLowerCase()}`} <Icon name="arrow" /></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <CTA />
+</Base>

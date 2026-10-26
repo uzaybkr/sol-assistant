@@ -1,0 +1,47 @@
+---
+import { EMAIL, SOLUTIONS, SERVICES, INDUSTRIES } from '../data/site.js';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div class="about">
+        <a class="logo" href="/" aria-label="Acme Cyber home">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l14 5v10c0 9-6 16-14 19C12 34 6 27 6 18V8z" fill="url(#gg)"/><circle cx="20" cy="19" r="6" fill="#08131f"/></svg>
+          <span>ACME <small>CYBER</small></span>
+        </a>
+        <p>Security for small and mid-sized businesses, watched around the clock by analysts based in the United States.</p>
+        <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </div>
+      <div>
+        <h4>Solutions</h4>
+        <ul>
+          {SOLUTIONS.map(s => <li><a href={`/solutions/${s.slug}`}>{s.name}</a></li>)}
+          <li><a href="/plan">Build your plan</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/readiness">Insurance readiness check</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>{SERVICES.map(s => <li><a href={`/services#${s.id}`}>{s.name}</a></li>)}</ul>
+        <h4 style="margin-top:26px">Industries</h4>
+        <ul>{INDUSTRIES.map(i => <li><a href={`/industries/${i.slug}`}>{i.name}</a></li>)}</ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/company">About &amp; history</a></li>
+          <li><a href="/results">Results &amp; testimonials</a></li>
+          <li><a href="/resources">Resources</a></li>
+          <li><a href="/monitoring">24/7 Monitoring</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ftr-base">
+      <span>© {year} Acme Cyber, a fictional demo brand.</span>
+      <span>Security incident? Email {EMAIL} with URGENT in the subject.</span>
+    </div>
+  </div>
+</footer>

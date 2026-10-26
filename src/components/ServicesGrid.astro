@@ -1,0 +1,16 @@
+---
+import Icon from './Icon.astro';
+import { SERVICES } from '../data/site.js';
+---
+<div class="svc">
+  {SERVICES.map(s => (
+    <a class="cover" href={`/services#${s.id}`}>
+      <article class="reveal">
+        <div class="ico"><Icon name={s.icon} /></div>
+        <h3>{s.name}</h3>
+        <p>{s.short}</p>
+        <span class="more">{s.tags}</span>
+      </article>
+    </a>
+  ))}
+</div>

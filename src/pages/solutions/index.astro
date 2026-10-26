@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Products from '../../components/Products.astro';
+import CTA from '../../components/CTA.astro';
+import { NEEDS, PACKAGES } from '../../data/site.js';
+---
+<Base title="Solutions" description="Web Fortress and Security Operations: a secure workplace and the oversight layer that proves it stays safe.">
+  <PageHero eyebrow="Solutions" title="Two systems." accent="One perimeter." crumbs={[['Solutions']]}
+    lede="Web Fortress is where your team works securely. Security Operations is the oversight that proves it. Most clients start with one and add the other." />
+
+  <section class="sec light">
+    <div class="wrap"><Products /></div>
+  </section>
+
+  <section class="sec light alt">
+    <div class="wrap">
+      <div class="sec-head split reveal">
+        <div style="display:grid;gap:20px">
+          <span class="eyebrow">Compare</span>
+          <h2>What each one <span class="sun-text">covers.</span></h2>
+        </div>
+        <p class="lede">Penetration testing is available on its own or alongside either solution.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="compare">
+          <thead><tr><th scope="col">Capability</th><th scope="col">Web Fortress</th><th scope="col">Security Operations</th><th scope="col">Pentest</th></tr></thead>
+          <tbody>
+            {NEEDS.map(n => (
+              <tr>
+                <th scope="row" style="font-weight:500">{n.label}</th>
+                {Object.keys(PACKAGES).map(k => <td class={`c ${n.pkg === k ? '' : 'no'}`}>{n.pkg === k ? '✓' : '—'}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Not sure which one you need?" lede="Tell us about your team in the plan builder, or ask Sol, our AI assistant, in the corner of the screen." />
+</Base>

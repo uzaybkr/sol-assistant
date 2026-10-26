@@ -1,0 +1,42 @@
+---
+// Floating assistant on every page. `inline` renders the same chat embedded in a page.
+import Icon from './Icon.astro';
+const { inline = false } = Astro.props;
+---
+{inline ? (
+  <section class="chat inline" data-chat aria-label="Chat with Sol, the Acme Cyber AI assistant">
+    <div class="chat-head">
+      <span class="badge" aria-hidden="true"></span>
+      <div><b>Sol · Acme Cyber AI assistant</b><small><span class="pulse"></span>Answers instantly, day or night</small></div>
+    </div>
+    <div class="msgs" aria-live="polite"></div>
+    <div class="handoff" hidden><a class="handoff-book" href="/contact">Book a call</a><button type="button" class="handoff-send">Send this chat to the team</button></div>
+    <div class="quick"></div>
+    <form class="chat-in">
+      <label class="sr" for="solInline">Your question</label>
+      <input id="solInline" autocomplete="off" maxlength="1000" placeholder="Ask about protection, pricing, incidents…">
+      <button type="submit" aria-label="Send"><Icon name="arrow" /></button>
+    </form>
+    <p class="chat-foot">Sol is an AI assistant and can make mistakes. For incidents, email support@example.com.</p>
+  </section>
+) : (
+  <>
+    <button class="fab" id="solFab" type="button" aria-controls="solPanel" aria-expanded="false"><span class="badge" aria-hidden="true"></span><span>Ask Sol</span></button>
+    <section class="chat floating" id="solPanel" aria-label="Chat with Sol, the Acme Cyber AI assistant">
+      <div class="chat-head">
+        <span class="badge" aria-hidden="true"></span>
+        <div><b>Sol · Acme Cyber AI assistant</b><small><span class="pulse"></span>Online now</small></div>
+        <button class="chat-x" type="button" aria-label="Close chat">×</button>
+      </div>
+      <div class="msgs" aria-live="polite"></div>
+      <div class="handoff" hidden><a class="handoff-book" href="/contact">Book a call</a><button type="button" class="handoff-send">Send this chat to the team</button></div>
+    <div class="quick"></div>
+      <form class="chat-in">
+        <label class="sr" for="solInput">Your question</label>
+        <input id="solInput" autocomplete="off" maxlength="1000" placeholder="Ask about protection, pricing, incidents…">
+        <button type="submit" aria-label="Send"><Icon name="arrow" /></button>
+      </form>
+      <p class="chat-foot">Sol is an AI assistant and can make mistakes.</p>
+    </section>
+  </>
+)}

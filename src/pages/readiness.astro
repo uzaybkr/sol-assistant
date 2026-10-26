@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { READINESS } from '../data/site.js';
+const levelLabel = { critical: 'Critical', high: 'Important', medium: 'Recommended' };
+---
+<Base title="Cyber Insurance Readiness Check" description="Answer 15 questions and see which controls cyber insurers commonly require that your business is missing. Free, private, three minutes.">
+  <PageHero eyebrow="Free readiness check" title="Will you pass your" accent="cyber-insurance renewal?" crumbs={[['Readiness check']]}
+    lede="Insurers now ask detailed security questions before they quote. Answer 15 of the most common ones and see where you stand. It takes about three minutes, and your answers stay in your browser." />
+
+  <section class="sec light alt" data-readiness>
+    <div class="wrap rc">
+      <div class="rc-progress" aria-live="polite">
+        <div class="rc-bar"><span data-progress style="width:0"></span></div>
+        <span data-count>0 of {READINESS.length} answered</span>
+      </div>
+
+      <form class="rc-form" novalidate>
+        {READINESS.map((q, i) => (
+          <fieldset class="rc-q">
+            <legend><span class="rc-n">{i + 1}</span><span>{q.q}</span></legend>
+            <span class={`lvl ${q.level}`}>{levelLabel[q.level]}</span>
+            <div class="rc-opts">
+              {[['yes', 'Yes'], ['no', 'No'], ['unsure', 'Not sure']].map(([v, l]) => (
+                <label class="rc-opt"><input type="radio" name={q.id} value={v} required><span>{l}</span></label>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+        <div class="rc-submit">
+          <button class="btn btn-solar" type="submit">See my results <Icon name="arrow" /></button>
+          <p class="form-note">General guidance only. Every insurer's questionnaire is different.</p>
+        </div>
+      </form>
+
+      <section class="panel rc-result" data-result hidden aria-live="polite" tabindex="-1">
+        <div class="rc-score">
+          <b data-score>0</b><span>/ 100</span>
+        </div>
+        <div class="rc-verdict">
+          <span class="eyebrow">Your result</span>
+          <h2 data-title></h2>
+          <p data-text class="muted"></p>
+        </div>
+        <div class="rc-gaps">
+          <h3>What to fix, most important first</h3>
+          <ol data-gaps></ol>
+          <p data-nogaps hidden class="muted">No gaps found. Keep screenshots or reports of each control ready for your renewal application.</p>
+        </div>
+        <div class="rc-actions">
+          <a class="btn btn-solar" data-book href="/contact">Book a 15-minute call <Icon name="arrow" /></a>
+          <a class="btn btn-ghost" data-send href="/contact">Send my results to Acme Cyber</a>
+        </div>
+        <p class="form-note">Sending your results opens the contact form with your score and gaps filled in. Nothing is sent until you press Send.</p>
+      </section>
+    </div>
+  </section>
+</Base>
+<script>
+  import { initReadiness } from '../scripts/readiness.js';
+  const root = document.querySelector('[data-readiness]');
+  if (root) initReadiness(root);
+</script>

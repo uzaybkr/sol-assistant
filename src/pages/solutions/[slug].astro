@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import Process from '../../components/Process.astro';
+import CTA from '../../components/CTA.astro';
+import { SOLUTIONS, FAQ } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return SOLUTIONS.map(s => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const other = SOLUTIONS.find(o => o.slug !== s.slug);
+const preset = s.slug === 'web-fortress' ? 'fortress' : 'secops';
+const [first, ...rest] = s.name.split(' ');
+---
+<Base title={s.name} description={s.summary}>
+  <PageHero eyebrow={s.tag} title={first} accent={rest.join(' ')} lede={s.summary} crumbs={[['Solutions', '/solutions'], [s.name]]}>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
+      <a class="btn btn-solar" href={`/plan?preset=${preset}`}>Configure {s.name} <Icon name="arrow" /></a>
+      <a class="btn btn-ghost" href="/contact">Talk to us</a>
+    </div>
+  </PageHero>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">What's included</span>
+        <h2>Every layer, <span class="sun-text">explained.</span></h2>
+      </div>
+      <div class="rows">
+        {s.features.map(([title, text], i) => (
+          <div class="row reveal"><span class="n">{String(i + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec light alt">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Rollout</span>
+        <h2>How we <span class="sun-text">set it up.</span></h2>
+      </div>
+      <Process />
+    </div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,6vw,90px)">
+      <div class="reveal" style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Questions</span>
+        <h2>Straight <span class="sun-text">answers.</span></h2>
+        <p class="lede">Still unsure? Ask Sol in the corner of the screen, or email us.</p>
+      </div>
+      <div class="faq reveal">
+        {FAQ.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tight light alt">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px">
+      <div style="display:grid;gap:10px">
+        <span class="eyebrow">Pairs well with</span>
+        <h3 style="font-size:clamp(28px,3vw,40px);font-weight:500">{other.name}</h3>
+        <p class="muted" style="max-width:56ch">{other.summary}</p>
+      </div>
+      <a class="btn btn-ghost" href={`/solutions/${other.slug}`}>Explore {other.name} <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <CTA />
+</Base>

@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CTA from '../components/CTA.astro';
+import { TESTIMONIALS, CASES } from '../data/site.js';
+const anySample = [...TESTIMONIALS, ...CASES].some(x => x.sample);
+---
+<Base title="Results" description="Client testimonials and incidents Acme Cyber has contained for small and mid-sized businesses.">
+  <PageHero eyebrow="Results" title="Proof, not" accent="promises." crumbs={[['Results']]}
+    lede="What our clients say, and how real incidents were handled from the first alert to the written report." />
+
+  <section class="sec tight light">
+    <div class="wrap">
+      <div class="stats reveal">
+        <div><b>24/7</b><span>Monitoring coverage, every day of the year</span></div>
+        <div><b>US</b><span>Where every SOC analyst is based</span></div>
+        <div><b>4</b><span>Security disciplines under one roof</span></div>
+        <div><b>1</b><span>Accountable partner for your security</span></div>
+      </div>
+      {anySample && <p class="form-note" style="margin-top:20px">Entries marked “Example” show the format and will be replaced with approved client stories.</p>}
+    </div>
+  </section>
+
+  <section class="sec light" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Testimonials</span>
+        <h2>In our clients' <span class="sun-text">words.</span></h2>
+      </div>
+      <div class="quotes">
+        {TESTIMONIALS.map(t => (
+          <figure class="quote reveal">
+            <div style="display:grid;gap:14px">
+              {t.sample && <span class="sample">Example</span>}
+              <blockquote>{t.quote}</blockquote>
+            </div>
+            <figcaption><b>{t.name}</b><span>{t.role}, {t.org}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec light alt">
+    <div class="wrap">
+      <div class="sec-head split reveal">
+        <div style="display:grid;gap:20px">
+          <span class="eyebrow">Cases handled</span>
+          <h2>Incidents, <span class="sun-text">contained.</span></h2>
+        </div>
+        <p class="lede">Client names are withheld to protect their security. Every case follows the same path: detect, triage, contain, report.</p>
+      </div>
+      <div class="cases">
+        {CASES.map(c => (
+          <article class="case reveal">
+            <div class="head">
+              <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+                <span class="eyebrow">{c.sector}</span>
+                {c.sample && <span class="sample">Example</span>}
+              </div>
+              <h3>{c.title}</h3>
+            </div>
+            <dl>
+              <div><dt>Situation</dt><dd>{c.problem}</dd></div>
+              <div><dt>Response</dt><dd>{c.action}</dd></div>
+              <div><dt>Outcome</dt><dd>{c.result}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Be the next story we tell." />
+</Base>

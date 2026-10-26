@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import { NEEDS } from '../data/site.js';
+---
+<div class="config" data-plan id="builder">
+  <form class="panel" onsubmit="return false">
+    <div class="field">
+      <div class="field-label"><label for="team">Team size</label><output id="teamOut" for="team">25</output></div>
+      <input type="range" id="team" min="1" max="250" value="25">
+    </div>
+    <div class="field">
+      <div class="field-label"><span id="indLabel">Industry</span></div>
+      <div class="seg" role="radiogroup" aria-labelledby="indLabel">
+        <input type="radio" name="ind" id="ind1" value="Professional services" checked><label for="ind1">Services</label>
+        <input type="radio" name="ind" id="ind2" value="Healthcare / regulated"><label for="ind2">Regulated</label>
+        <input type="radio" name="ind" id="ind3" value="Retail / e-commerce"><label for="ind3">Retail</label>
+      </div>
+    </div>
+    <fieldset class="field" style="border:0;margin:0;padding-inline:0">
+      <legend class="field-label" style="margin-bottom:14px">What should we cover?</legend>
+      <div class="chips">
+        {NEEDS.map(n => <span class="chip"><input type="checkbox" id={`n-${n.id}`} value={n.id}><label for={`n-${n.id}`}>{n.label}</label></span>)}
+      </div>
+    </fieldset>
+  </form>
+
+  <aside class="panel result" aria-live="polite">
+    <div class="gauge">
+      <div class="gauge-num">
+        <svg viewBox="0 0 128 128" aria-hidden="true"><circle class="track" cx="64" cy="64" r="54"/><circle class="fill" id="gFill" cx="64" cy="64" r="54" stroke-dasharray="339.3" stroke-dashoffset="339.3"/></svg>
+        <b id="gNum">0%</b>
+      </div>
+      <div><strong id="gTitle">Coverage</strong><p id="gText">Pick what matters and watch your perimeter close.</p></div>
+    </div>
+    <div class="plan" id="plan"></div>
+    <div class="brief" id="brief"></div>
+    <div class="row-btns">
+      <a class="btn btn-solar" id="sendBrief" href="/contact">Send this plan <Icon name="arrow" /></a>
+      <button class="btn btn-ghost" type="button" id="copyBrief">Copy summary</button>
+    </div>
+    <p class="form-note">Prefer email? <a id="mailBrief" href="mailto:support@example.com">Open it in your mail app</a>.</p>
+  </aside>
+</div>
+<script>
+  import { initPlan } from '../scripts/plan.js';
+  const root = document.querySelector('[data-plan]');
+  if (root) initPlan(root);
+</script>

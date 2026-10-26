@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PlanBuilder from '../components/PlanBuilder.astro';
+---
+<Base title="Build your plan" description="Set your parameters: choose team size and what to protect, and send the plan to Acme Cyber for a proposal.">
+  <PageHero eyebrow="Build your plan" title="Set your" accent="parameters." crumbs={[['Build your plan']]}
+    lede="Tell us about your team and what you need protected. Your plan updates as you go, and you can send the summary straight to our team for a proposal." />
+  <section class="sec light alt">
+    <div class="wrap"><PlanBuilder /></div>
+  </section>
+</Base>

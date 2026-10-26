@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection, render } from 'astro:content';
+import { bookHref } from '../../data/site.js';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('resources');
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = d => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const others = (await getCollection('resources')).filter(p => p.id !== post.id).sort((a, b) => b.data.date - a.data.date).slice(0, 2);
+---
+<Base title={post.data.title} description={post.data.description}>
+  <PageHero eyebrow={post.data.tag} title={post.data.title} crumbs={[['Resources', '/resources'], [post.data.tag]]}>
+    <p class="post-meta" style="color:var(--dust)">{fmt(post.data.date)} · {post.data.minutes} min read · Acme Cyber</p>
+  </PageHero>
+
+  <section class="sec light">
+    <div class="wrap article-grid">
+      <article class="prose"><Content /></article>
+      <aside class="article-side">
+        <div class="panel">
+          <span class="eyebrow">Free check</span>
+          <h3>Where do you stand?</h3>
+          <p class="muted">15 questions, three minutes. See which controls insurers commonly require that you're missing.</p>
+          <a class="btn btn-solar" href="/readiness">Take the readiness check <Icon name="arrow" /></a>
+          <a class="link" href={bookHref}>Or book a 15-minute call <Icon name="arrow" /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {others.length > 0 && (
+    <section class="sec tight light alt">
+      <div class="wrap">
+        <div class="sec-head"><span class="eyebrow">Keep reading</span></div>
+        <div class="posts">
+          {others.map(p => (
+            <a class="post" href={`/resources/${p.id}`}>
+              <span class="eyebrow">{p.data.tag}</span>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.description}</p>
+              <span class="post-meta">{p.data.minutes} min read</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CTA />
+</Base>

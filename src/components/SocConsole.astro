@@ -1,0 +1,32 @@
+---
+const { heading = true } = Astro.props;
+---
+<div class="soc" data-soc>
+  <div class="reveal">
+    {heading && <>
+      <span class="eyebrow">24/7 Monitoring</span>
+      <h2 style="margin-top:20px">Real analysts.<br><span class="sun-text">Real time.</span></h2>
+      <p class="lede" style="margin-top:22px">Every login, file change and blocked request flows into our SIEM. US-based analysts sort the noise from the threats and step in before a small event becomes an outage.</p>
+    </>}
+    <div class="steps">
+      <div class="step"><b>01</b><div><h3>Detect</h3><p>Logs from your portal, website and endpoints stream in continuously.</p></div></div>
+      <div class="step"><b>02</b><div><h3>Triage</h3><p>An analyst confirms whether an alert is real and how serious it is.</p></div></div>
+      <div class="step"><b>03</b><div><h3>Contain</h3><p>We block the source, isolate what's affected and restore from verified backups.</p></div></div>
+      <div class="step"><b>04</b><div><h3>Report</h3><p>You get a plain-language summary and the steps that stop it happening again.</p></div></div>
+    </div>
+  </div>
+  <div class="term reveal" role="img" aria-label="Simulated SOC event feed showing detections being triaged, contained and reported">
+    <div class="term-bar"><div class="dots"><i></i><i></i><i></i></div><span>acme-soc // live view</span><span style="display:flex;align-items:center;gap:8px"><span class="pulse"></span>ONLINE</span></div>
+    <div class="term-stats">
+      <div><span>Events</span><b data-st="events">0</b></div>
+      <div><span>Escalated</span><b data-st="esc">0</b></div>
+      <div><span>Contained</span><b data-st="con" style="color:var(--ok)">0</b></div>
+    </div>
+    <div class="log"></div>
+    <div class="term-foot">DEMO FEED · SIMULATED EVENTS FOR ILLUSTRATION</div>
+  </div>
+</div>
+<script>
+  import { initSoc } from '../scripts/soc.js';
+  document.querySelectorAll('[data-soc]').forEach(initSoc);
+</script>

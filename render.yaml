@@ -1,0 +1,23 @@
+# Render Blueprint: New → Blueprint → pick this repo. Render reads everything below.
+# Keys marked `sync: false` are asked for once in the dashboard and never stored in git.
+services:
+  - type: web
+    name: acme-cyber-site
+    runtime: node
+    plan: starter            # free tier sleeps when idle; starter stays awake
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: NODE_VERSION
+        value: "22"
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CONTACT_TO
+        value: support@example.com
+      - key: CONTACT_FROM
+        sync: false

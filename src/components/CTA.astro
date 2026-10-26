@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+import { bookHref } from '../data/site.js';
+const {
+  title = 'Put your business under the sun.',
+  lede = 'Talk to a real person about what you need protected. We reply with a plan, not a sales script.',
+} = Astro.props;
+---
+<section class="cta grain">
+  <div class="horizon" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center">Get protected</span>
+    <h2 style="margin-top:22px">{title}</h2>
+    <p class="lede">{lede}</p>
+    <div class="actions">
+      <a class="btn btn-solar" href={bookHref}>Book a 15-minute call <Icon name="arrow" /></a>
+      <a class="btn btn-ghost" href="/readiness">Take the readiness check</a>
+    </div>
+  </div>
+</section>

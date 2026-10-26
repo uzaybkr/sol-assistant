@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('resources')).sort((a, b) => b.data.date - a.data.date);
+const fmt = d => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const [lead, ...rest] = posts;
+---
+<Base title="Resources" description="Plain-language guides on cyber insurance, compliance and incident response for small and mid-sized businesses.">
+  <PageHero eyebrow="Resources" title="Security, explained" accent="in plain English." crumbs={[['Resources']]}
+    lede="Practical guides for business owners and office managers: what insurers ask, what the rules require, and what to do when something goes wrong." />
+
+  <section class="sec light">
+    <div class="wrap">
+      {lead && (
+        <a class="post-lead reveal" href={`/resources/${lead.id}`}>
+          <span class="eyebrow">{lead.data.tag}</span>
+          <h2>{lead.data.title}</h2>
+          <p class="lede">{lead.data.description}</p>
+          <span class="post-meta">{fmt(lead.data.date)} · {lead.data.minutes} min read</span>
+          <span class="link">Read the guide <Icon name="arrow" /></span>
+        </a>
+      )}
+      <div class="posts">
+        {rest.map(p => (
+          <a class="post reveal" href={`/resources/${p.id}`}>
+            <span class="eyebrow">{p.data.tag}</span>
+            <h3>{p.data.title}</h3>
+            <p>{p.data.description}</p>
+            <span class="post-meta">{fmt(p.data.date)} · {p.data.minutes} min read</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Questions about your own setup?" />
+</Base>

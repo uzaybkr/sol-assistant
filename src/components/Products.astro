@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+import { SOLUTIONS } from '../data/site.js';
+const [fortress, secops] = SOLUTIONS;
+const short = s => s.features.slice(0, 4).map(f => f[0]);
+---
+<div class="products">
+  <article class="product reveal">
+    <div class="product-top"><h3>Web<br>Fortress</h3><span class="tag">{fortress.tag}</span></div>
+    <div class="glyph"><div class="fort"><i></i><i></i><i></i>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l14 5v10c0 9-6 16-14 19C12 34 6 27 6 18V8z" fill="url(#gg)"/><text x="20" y="23" text-anchor="middle" font-family="Public Sans,sans-serif" font-weight="700" font-size="9" fill="#08131f">24/7</text></svg>
+    </div></div>
+    <ul class="checks">{short(fortress).map(f => <li><Icon name="check" />{f}</li>)}</ul>
+    <div class="product-actions">
+      <a class="btn btn-ghost" href="/solutions/web-fortress">Explore Web Fortress <Icon name="arrow" /></a>
+      <a class="link" href="/plan?preset=fortress">Configure <Icon name="arrow" /></a>
+    </div>
+  </article>
+  <article class="product reveal">
+    <div class="product-top"><h3>Security<br>Operations</h3><span class="tag">{secops.tag}</span></div>
+    <div class="glyph"><div class="bars"></div></div>
+    <ul class="checks">{short(secops).map(f => <li><Icon name="check" />{f}</li>)}</ul>
+    <div class="product-actions">
+      <a class="btn btn-ghost" href="/solutions/security-operations">Explore Security Operations <Icon name="arrow" /></a>
+      <a class="link" href="/plan?preset=secops">Configure <Icon name="arrow" /></a>
+    </div>
+  </article>
+</div>

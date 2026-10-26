@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import CTA from '../../components/CTA.astro';
+import { INDUSTRIES, bookHref } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return INDUSTRIES.map(ind => ({ params: { slug: ind.slug }, props: { ind } }));
+}
+const { ind } = Astro.props;
+const others = INDUSTRIES.filter(o => o.slug !== ind.slug);
+---
+<Base title={`Cybersecurity for ${ind.name}`} description={ind.lede}>
+  <PageHero eyebrow={ind.name} title={ind.title} accent={ind.accent} lede={ind.lede} crumbs={[['Industries'], [ind.name]]}>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
+      <a class="btn btn-solar" href="/readiness">Take the readiness check <Icon name="arrow" /></a>
+      <a class="btn btn-ghost" href={bookHref}>Book a 15-minute call</a>
+    </div>
+    <nav class="ind-tabs" aria-label="Industries">
+      {INDUSTRIES.map(o => <a href={`/industries/${o.slug}`} aria-current={o.slug === ind.slug ? 'page' : undefined}>{o.name}</a>)}
+    </nav>
+  </PageHero>
+
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Sound familiar?</span>
+        <h2>What keeps <span class="sun-text">{ind.who.split(',')[0].toLowerCase()}</span> up at night.</h2>
+      </div>
+      <div class="principles">
+        {ind.pains.map(([t, d]) => <div class="reveal"><h3>{t}</h3><p>{d}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec light alt">
+    <div class="wrap">
+      <div class="sec-head split reveal">
+        <div style="display:grid;gap:20px">
+          <span class="eyebrow">{ind.regulation}</span>
+          <h2>What the rule asks for, <span class="sun-text">and how we cover it.</span></h2>
+        </div>
+        <p class="lede">{ind.regSummary}</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="compare map-table">
+          <thead><tr><th scope="col">Requirement</th><th scope="col">How Acme Cyber covers it</th></tr></thead>
+          <tbody>
+            {ind.map.map(([req, how]) => <tr><th scope="row">{req}</th><td>{how}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <p class="form-note" style="margin-top:14px">Plain-language summary, not legal advice. Confirm your specific obligations with your attorney or compliance advisor.</p>
+    </div>
+  </section>
+
+  <section class="sec light">
+    <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,6vw,90px)">
+      <div class="reveal" style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Questions</span>
+        <h2>Straight <span class="sun-text">answers.</span></h2>
+        <p class="lede">Ask Sol, our AI assistant, in the corner of the screen for anything else.</p>
+      </div>
+      <div class="faq reveal">
+        {ind.faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec tight light alt">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px">
+      <div style="display:grid;gap:10px">
+        <span class="eyebrow">Also protecting</span>
+        {others.map(o => <h3 style="font-size:clamp(26px,3vw,36px);font-weight:500;margin:0">{o.name}</h3>)}
+      </div>
+      {others.map(o => <a class="btn btn-ghost" href={`/industries/${o.slug}`}>See {o.name.toLowerCase()} <Icon name="arrow" /></a>)}
+    </div>
+  </section>
+
+  <CTA title={`Security built for ${ind.name.toLowerCase()}.`} />
+</Base>
